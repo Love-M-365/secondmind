@@ -6,7 +6,7 @@
         "C:/Users/Love/Desktop/Projects/secondmind/backend/scripts/mcp-server.js"
       ],
       "env": {
-        "MONGO_URI": "mongodb://localhost:27017/secondmind"
+        "MONGO_URI": "mongodb://Love_m_365:Lovemdev@cluster0-shard-00-00.otamm.mongodb.net:27017,cluster0-shard-00-01.otamm.mongodb.net:27017,cluster0-shard-00-02.otamm.mongodb.net:27017/secondmind?ssl=true&authSource=admin&retryWrites=true&w=majority"
       }
     }
   }
