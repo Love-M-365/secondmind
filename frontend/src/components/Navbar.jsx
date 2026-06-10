@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Brain, User, Database, Sparkles, LogOut } from 'lucide-react';
 
+import logoImg from '../assets/secondbrainlogo.png';
+
 const Navbar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
@@ -18,11 +20,7 @@ const Navbar = () => {
     }}>
       <div className="container">
         <Link className="navbar-brand d-flex align-items-center gap-2 text-white fw-bold fs-4" to="/">
-          <div className="p-2 rounded bg-gradient d-flex align-items-center justify-content-center" style={{
-            background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))'
-          }}>
-            <Brain size={20} className="text-white" />
-          </div>
+          <img src={logoImg} alt="SecondMind Logo" style={{ height: '32px', width: 'auto' }} />
           <span style={{ fontFamily: "'Space Grotesk', sans-serif" }}>SecondMind</span>
         </Link>
 
