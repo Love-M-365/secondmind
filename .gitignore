@@ -2,3 +2,7 @@ frontend/.env
 backend/.env
 frontend/.env.*
 backend/.env.*
+*env-vars.yaml
+backend/env-vars.yaml
+backend/scratch/
+scratch/

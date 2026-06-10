@@ -1,12 +1,9 @@
+import '../config/env.js';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import connectDB from '../config/db.js';
 import User from '../models/user.model.js';
 import Memory from '../models/memory.model.js';
 import { queryModel } from '../services/gemini.service.js';
-
-// Load env
-dotenv.config();
 
 const runCheck = async () => {
   console.log('=== SECONDMIND DIAGNOSTIC RUN ===');
