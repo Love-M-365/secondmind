@@ -537,11 +537,11 @@ const TwinPage = () => {
                   
                   {isEditing ? (
                     <div>
-                      <div className="d-flex flex-wrap gap-2 mb-2">
+                      <div className="d-flex flex-column gap-2 mb-3">
                         {strengths.map((str, idx) => (
-                          <span key={idx} className="badge badge-glass badge-strength d-flex align-items-center gap-2">
-                            {str}
-                            <Trash2 size={12} className="cursor-pointer text-danger-light" onClick={() => handleRemoveItem('strength', idx)} />
+                          <span key={idx} className="badge badge-glass badge-strength d-flex align-items-center justify-content-between gap-3 text-start" style={{ whiteSpace: 'normal', borderRadius: '10px' }}>
+                            <span style={{ fontSize: '0.8rem' }}>{str}</span>
+                            <Trash2 size={13} className="cursor-pointer text-danger-light flex-shrink-0" onClick={() => handleRemoveItem('strength', idx)} />
                           </span>
                         ))}
                       </div>
@@ -559,14 +559,15 @@ const TwinPage = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="d-flex flex-wrap gap-2">
+                    <div className="d-flex flex-column gap-2.5">
                       {strengths.length === 0 ? (
                         <span className="text-muted small">No strengths analyzed yet.</span>
                       ) : (
                         strengths.map((str, idx) => (
-                          <span key={idx} className="badge badge-glass badge-strength px-3 py-2 fs-7 transition-all hover-scale">
-                            {str}
-                          </span>
+                          <div key={idx} className="p-3 rounded bg-white-5 border border-glass d-flex align-items-start gap-3 transition-all hover-scale-sm hover-glow-emerald" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                            <div className="p-1 rounded-circle bg-success-glow mt-1 flex-shrink-0" style={{ width: 10, height: 10, background: 'rgba(16,185,129,0.35)', boxShadow: '0 0 8px rgba(16,185,129,0.6)' }}></div>
+                            <span className="text-secondary small text-start lh-sm" style={{ fontSize: '0.85rem' }}>{str}</span>
+                          </div>
                         ))
                       )}
                     </div>
@@ -582,11 +583,11 @@ const TwinPage = () => {
                   
                   {isEditing ? (
                     <div>
-                      <div className="d-flex flex-wrap gap-2 mb-2">
+                      <div className="d-flex flex-column gap-2 mb-3">
                         {weaknesses.map((wk, idx) => (
-                          <span key={idx} className="badge badge-glass badge-weakness d-flex align-items-center gap-2">
-                            {wk}
-                            <Trash2 size={12} className="cursor-pointer text-danger-light" onClick={() => handleRemoveItem('weakness', idx)} />
+                          <span key={idx} className="badge badge-glass badge-weakness d-flex align-items-center justify-content-between gap-3 text-start" style={{ whiteSpace: 'normal', borderRadius: '10px' }}>
+                            <span style={{ fontSize: '0.8rem' }}>{wk}</span>
+                            <Trash2 size={13} className="cursor-pointer text-danger-light flex-shrink-0" onClick={() => handleRemoveItem('weakness', idx)} />
                           </span>
                         ))}
                       </div>
@@ -604,14 +605,15 @@ const TwinPage = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="d-flex flex-wrap gap-2">
+                    <div className="d-flex flex-column gap-2.5">
                       {weaknesses.length === 0 ? (
                         <span className="text-muted small">No development areas analyzed yet.</span>
                       ) : (
                         weaknesses.map((wk, idx) => (
-                          <span key={idx} className="badge badge-glass badge-weakness px-3 py-2 fs-7 transition-all hover-scale">
-                            {wk}
-                          </span>
+                          <div key={idx} className="p-3 rounded bg-white-5 border border-glass d-flex align-items-start gap-3 transition-all hover-scale-sm hover-glow-danger" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                            <div className="p-1 rounded-circle bg-danger-glow mt-1 flex-shrink-0" style={{ width: 10, height: 10, background: 'rgba(239,68,68,0.35)', boxShadow: '0 0 8px rgba(239,68,68,0.6)' }}></div>
+                            <span className="text-secondary small text-start lh-sm" style={{ fontSize: '0.85rem' }}>{wk}</span>
+                          </div>
                         ))
                       )}
                     </div>

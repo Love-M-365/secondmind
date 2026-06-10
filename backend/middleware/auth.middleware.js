@@ -36,21 +36,40 @@ export const protect = async (req, res, next) => {
       let user = await User.findOne({ firebaseUid: decodedToken.uid });
       
       if (!user) {
-        try {
-          user = await User.create({
-            firebaseUid: decodedToken.uid,
-            name: decodedToken.name || decodedToken.email.split('@')[0],
-            email: decodedToken.email,
-            photoUrl: decodedToken.picture || ''
-          });
-          console.log(`Synced new user created in MongoDB: ${user.email}`);
-        } catch (createError) {
-          if (createError.code === 11000) {
-            // If a concurrent request created the user in the meantime, retrieve that user record
-            user = await User.findOne({ firebaseUid: decodedToken.uid });
-            if (!user) throw createError;
-          } else {
-            throw createError;
+        // Check if user exists by email (e.g. from prior mock sandbox logins)
+        user = await User.findOne({ email: decodedToken.email });
+        
+        if (user) {
+          // Merge/Update the existing user with the real Firebase UID
+          user.firebaseUid = decodedToken.uid;
+          if (decodedToken.picture) user.photoUrl = decodedToken.picture;
+          if (decodedToken.name) user.name = decodedToken.name;
+          await user.save();
+          console.log(`Transitioned existing mock profile: ${user.email} with real Firebase UID: ${decodedToken.uid}`);
+        } else {
+          try {
+            user = await User.create({
+              firebaseUid: decodedToken.uid,
+              name: decodedToken.name || decodedToken.email.split('@')[0],
+              email: decodedToken.email,
+              photoUrl: decodedToken.picture || ''
+            });
+            console.log(`Synced new user created in MongoDB: ${user.email}`);
+          } catch (createError) {
+            if (createError.code === 11000) {
+              user = await User.findOne({ firebaseUid: decodedToken.uid });
+              if (!user) {
+                user = await User.findOne({ email: decodedToken.email });
+                if (user) {
+                  user.firebaseUid = decodedToken.uid;
+                  await user.save();
+                } else {
+                  throw createError;
+                }
+              }
+            } else {
+              throw createError;
+            }
           }
         }
       }
@@ -60,7 +79,10 @@ export const protect = async (req, res, next) => {
       next();
     } catch (error) {
       console.error('Authentication middleware error:', error);
-      res.status(401).json({ message: 'Not authorized, token verification failed' });
+      res.status(401).json({ 
+        message: 'Not authorized, token verification failed', 
+        error: error.message 
+      });
     }
   } else {
     res.status(401).json({ message: 'Not authorized, no token provided' });

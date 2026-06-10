@@ -287,20 +287,42 @@ const MemoryExplorer = () => {
                   const isHighlighted = relevantMemoryIds.includes(m._id);
                   const isExpanded = expandedMemoryId === m._id;
                   
+                  // Color code source border types
+                  const getSourceBorderClass = (type) => {
+                    switch (type?.toLowerCase()) {
+                      case 'document': return 'source-border-document';
+                      case 'goal': return 'source-border-goal';
+                      case 'note':
+                      default: return 'source-border-note';
+                    }
+                  };
+
+                  // Color code dot matching
+                  const getDotColor = () => {
+                    if (isHighlighted) return '#10b981';
+                    if (m.sourceType === 'document') return '#3b82f6';
+                    if (m.sourceType === 'goal') return '#10b981';
+                    return 'var(--accent-primary)';
+                  };
+
                   return (
                     <div key={m._id} className="timeline-item">
-                      <div className="timeline-dot" style={{
-                        background: isHighlighted ? '#10b981' : 'var(--accent-primary)',
-                        boxShadow: isHighlighted ? '0 0 12px #10b981' : '0 0 10px var(--accent-primary)'
-                      }}></div>
+                      <div className="timeline-dot-wrapper">
+                        {isHighlighted && <div className="timeline-dot-pulse"></div>}
+                        <div className="timeline-dot" style={{
+                          background: getDotColor(),
+                          boxShadow: `0 0 10px ${getDotColor()}`
+                        }}></div>
+                      </div>
                       
                       <div 
                         onClick={() => toggleExpand(m._id)}
-                        className={`p-3.5 rounded bg-white-5 border transition-all cursor-pointer ${
+                        className={`p-4 rounded bg-white-5 border transition-all cursor-pointer ${
                           isHighlighted ? 'border-success scanning' : 'border-glass'
-                        } hover-glow-card`}
+                        } ${getSourceBorderClass(m.sourceType)} hover-glow-card`}
                         style={{
-                          background: isHighlighted ? 'rgba(16,185,129,0.03)' : 'rgba(255,255,255,0.02)',
+                          background: isHighlighted ? 'rgba(16,185,129,0.03)' : 'rgba(255,255,255,0.025)',
+                          marginBottom: '16px'
                         }}
                       >
                         <div className="d-flex justify-content-between align-items-start gap-3">
@@ -424,9 +446,52 @@ const MemoryExplorer = () => {
           color: #ffffff !important;
           background: rgba(255,255,255,0.08) !important;
         }
+        .hover-glow-card {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          border-radius: 14px !important;
+        }
         .hover-glow-card:hover {
-          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-          border-color: rgba(255,255,255,0.12);
+          transform: translateX(6px) translateY(-1px);
+          box-shadow: 0 8px 30px rgba(139, 92, 246, 0.08);
+          border-color: rgba(255, 255, 255, 0.16) !important;
+        }
+        .timeline-item {
+          padding-bottom: 34px !important;
+        }
+        .timeline-dot {
+          width: 14px !important;
+          height: 14px !important;
+          left: -23px !important;
+          top: 22px !important;
+          border: 2.5px solid #08070d;
+        }
+        .timeline-dot-wrapper {
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        .timeline-dot-pulse {
+          position: absolute;
+          left: -27px;
+          top: 18px;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: rgba(16, 185, 129, 0.2);
+          animation: pulse-dot-ring 2s infinite ease-in-out;
+        }
+        @keyframes pulse-dot-ring {
+          0% { transform: scale(0.65); opacity: 1; }
+          100% { transform: scale(1.35); opacity: 0; }
+        }
+        .source-border-document {
+          border-left: 4px solid #3b82f6 !important;
+        }
+        .source-border-note {
+          border-left: 4px solid #8b5cf6 !important;
+        }
+        .source-border-goal {
+          border-left: 4px solid #10b981 !important;
         }
         /* Neon Yellow Highlight styling */
         .search-highlight {
